@@ -15,8 +15,12 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import android.os.Environment
+import android.widget.EditText
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import java.lang.NullPointerException
+import java.nio.file.Files
+import java.nio.file.Paths
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,25 +48,48 @@ class MainActivity : AppCompatActivity() {
         if (h < 14) return a + m + j + "09" else return a + m + j + "14"
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun createCSV(filename: String) {
-        val path = "/sdcard/donnerie"
         val root = Environment.getExternalStorageDirectory().toString()
-        var file = File(root+"/"+filename)
-        Log.d("Hola",root)
+        var file = File(root+"/Donnerie/"+filename)
+        //Log.d("Hola",root)
+
+        //Log.d("Hola",file.length().toString())
         //delete any file object with path and filename that already exists
         //fileOut.delete()
+        if(file.length().toInt() == 0) {
+            var dir = File(root+"/Donnerie/")
+            dir.mkdirs()
+            //create a new file
 
-        //create a new file
-        file.createNewFile()
+            file.createNewFile()
 
-        //append the header and a newline
-        file.appendText("objet;poids (kg);entree;sortie;jeté\n", Charsets.UTF_8)
+            //append the header and a newline
+            file.appendText("objet;poids (kg);entree;sortie;jeté\n", Charsets.UTF_8)
+            Log.d("Hola","Created")
+        }
+
+    }
+    fun addLineCSV(filename: String, line: String) {
+        val root = Environment.getExternalStorageDirectory().toString()
+        var file = File(root+"/Donnerie/"+filename)
+
+        Log.d("Hola",file.length().toString())
+
+            //append the header and a newline
+        file.appendText(line, Charsets.UTF_8)
+
+        Log.d("Hola","Appended")
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        try {
+            this.supportActionBar!!.hide()
+        } catch (e: NullPointerException) {
+        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1);
@@ -76,33 +103,48 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
         layout = findViewById(R.id.relativeLayout)
+        // Create if not exist csv
+        val filename = getCurrentExcelFileName()
+        createCSV(filename + ".csv")
         layout.setOnTouchListener(object : OnSwipeTouchListener(this@MainActivity) {
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                Toast.makeText(this@MainActivity, "Swipe Left gesture detected",
+                Toast.makeText(this@MainActivity, "Liste d'objets en stock",
                     Toast.LENGTH_SHORT)
                     .show()
             }
             override fun onSwipeRight() {
                 super.onSwipeRight()
+                val oName = findViewById(R.id.ObjectName) as EditText
+                val oWeight = findViewById(R.id.ObjectWeight) as EditText
+                addLineCSV(filename + ".csv", oName.text.toString()+";"+oWeight.text.toString().replace(".", ",")+";0;0;1\n")
+                oName.getText().clear()
+                oWeight.getText().clear()
                 Toast.makeText(
                     this@MainActivity,
-                    "Swipe Right gesture detected",
+                    "RIP",
                     Toast.LENGTH_SHORT
                 ).show()
             }
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onSwipeUp() {
                 super.onSwipeUp()
-                Toast.makeText(this@MainActivity, "Swipe up gesture detected" + getCurrentExcelFileName(), Toast.LENGTH_SHORT)
+                val oName = findViewById(R.id.ObjectName) as EditText
+                val oWeight = findViewById(R.id.ObjectWeight) as EditText
+                addLineCSV(filename + ".csv", oName.text.toString()+";"+oWeight.text.toString().replace(".", ",")+";1;0;0\n")
+                oName.getText().clear()
+                oWeight.getText().clear()
+                Toast.makeText(this@MainActivity, "Merci pour la reprise", Toast.LENGTH_SHORT)
                     .show()
-                // TODO Create if not exist xslx
-                val filename = getCurrentExcelFileName()
-                createCSV(filename + ".csv")
             }
             override fun onSwipeDown() {
                 super.onSwipeDown()
-                Toast.makeText(this@MainActivity, "Swipe down gesture detected", Toast.LENGTH_SHORT)
+                val oName = findViewById(R.id.ObjectName) as EditText
+                val oWeight = findViewById(R.id.ObjectWeight) as EditText
+                addLineCSV(filename + ".csv", oName.text.toString()+";"+oWeight.text.toString().replace(".", ",")+";0;1;0\n")
+                oName.getText().clear()
+                oWeight.getText().clear()
+                Toast.makeText(this@MainActivity, "Merci pour votre don", Toast.LENGTH_SHORT)
                     .show()
             }
         })

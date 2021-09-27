@@ -4,13 +4,65 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="0px"
+    android:background="#68DD6D"
     tools:context=".MainActivity">
-    <TextView
+
+    <EditText
+        android:id="@+id/ObjectName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Swipe Left, right, up and down to detect Swipe Gesture"
+        android:ems="10"
+        android:hint="Objet"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:translationX="400px"
+        android:translationY="500px" />
+
+    <EditText
+        android:id="@+id/ObjectWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Poids (kg)"
+        android:inputType="numberDecimal"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:translationX="400px"
+        android:translationY="800px" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Entrée\nv"
         android:textAlignment="center"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:translationY="2000px" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="^\nSortie"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:translationY="100px" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Jeté >   "
+        android:textAlignment="textEnd"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:translationY="1100px" />
+
 </RelativeLayout>
