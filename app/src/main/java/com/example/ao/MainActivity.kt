@@ -76,10 +76,60 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("Hola",file.length().toString())
 
-            //append the header and a newline
+        //append the header and a newline
         file.appendText(line, Charsets.UTF_8)
 
         Log.d("Hola","Appended")
+
+    }
+    fun readCSV(filename: String): ArrayList<String> {
+        val root = Environment.getExternalStorageDirectory().toString()
+        var file = File(root+"/Donnerie/"+filename)
+
+        Log.d("Hola",file.length().toString())
+        var arrayObjectIn = arrayListOf<String>()
+        var arrayObjectInFinal = arrayListOf<String>()
+        var firstLine = true;
+        //append the header and a newline
+        file.forEachLine {
+            if (firstLine) {
+                firstLine = false
+            }
+            else {
+                var split_res = it.split(";")
+                var objectName = split_res[0]
+                var objectWeight = split_res[1]
+                var objectIn = split_res[2]
+                if(objectIn == "1") {
+                    arrayObjectIn.add(objectName+";"+objectWeight)
+                }
+            }
+        }
+        firstLine = true;
+        for(objectIn in arrayObjectIn) {
+            var isIn = false
+            file.forEachLine {
+                if (firstLine) {
+                    firstLine = false
+                }
+                else {
+                    var split_res = it.split(";")
+                    var objectName = split_res[0]
+                    var objectWeight = split_res[1]
+                    var objectOut = split_res[3]
+                    var objectDrop = split_res[4]
+                    if((objectOut == "1" ||objectDrop == "1") && objectName+";"+objectWeight == objectIn) {
+                        isIn = true
+                    }
+                }
+            }
+            if(isIn == false) {
+                arrayObjectInFinal.add(objectIn)
+            }
+        }
+        Log.d("Hola","arrayObjectInFinal")
+        return arrayObjectInFinal
+
 
     }
 
@@ -116,7 +166,7 @@ class MainActivity : AppCompatActivity() {
         layout.setOnTouchListener(object : OnSwipeTouchListener(this@MainActivity) {
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                Toast.makeText(this@MainActivity, "Liste d'objets en stock",
+                Toast.makeText(this@MainActivity, readCSV(filename+".csv").joinToString("\n"),
                     Toast.LENGTH_SHORT)
                     .show()
             }
@@ -151,7 +201,7 @@ class MainActivity : AppCompatActivity() {
                 val oName = findViewById(R.id.ObjectName) as EditText
                 val oWeight = findViewById(R.id.ObjectWeight) as EditText
                 if(checkInput(oName.text.toString()) && checkInput(oWeight.text.toString())) {
-                    addLineCSV(filename + ".csv", oName.text.toString()+";"+oWeight.text.toString().replace(".", ",")+";1;0;0\n")
+                    addLineCSV(filename + ".csv", oName.text.toString()+";"+oWeight.text.toString().replace(".", ",")+";0;1;0\n")
                     oName.getText().clear()
                     oWeight.getText().clear()
                     Toast.makeText(this@MainActivity, "Merci pour la reprise", Toast.LENGTH_SHORT)
@@ -170,7 +220,7 @@ class MainActivity : AppCompatActivity() {
                 val oName = findViewById(R.id.ObjectName) as EditText
                 val oWeight = findViewById(R.id.ObjectWeight) as EditText
                 if(checkInput(oName.text.toString()) && checkInput(oWeight.text.toString())) {
-                    addLineCSV(filename + ".csv", oName.text.toString()+";"+oWeight.text.toString().replace(".", ",")+";0;1;0\n")
+                    addLineCSV(filename + ".csv", oName.text.toString()+";"+oWeight.text.toString().replace(".", ",")+";1;0;0\n")
                     oName.getText().clear()
                     oWeight.getText().clear()
                     Toast.makeText(this@MainActivity, "Merci pour votre don", Toast.LENGTH_SHORT)
