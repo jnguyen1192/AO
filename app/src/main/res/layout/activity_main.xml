@@ -12,57 +12,77 @@
         android:id="@+id/ObjectName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="29dp"
         android:ems="10"
         android:hint="Objet"
         android:inputType="textPersonName"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        android:translationX="400px"
-        android:translationY="500px" />
+        android:translationX="400px" />
 
     <EditText
         android:id="@+id/ObjectWeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/ObjectName"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="Poids (kg)"
         android:inputType="numberDecimal"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        android:translationX="400px"
-        android:translationY="800px" />
+        android:translationX="400px" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="17dp"
         android:text="Entrée\nv"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="34sp"
-        android:textStyle="bold"
-        android:translationY="2000px" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="13dp"
         android:text="^\nSortie"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="34sp"
-        android:textStyle="bold"
-        android:translationY="100px" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="143dp"
+        android:layout_height="55dp"
+        android:layout_below="@+id/ObjectWeight"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="47dp"
+        android:layout_marginEnd="22dp"
         android:text="Jeté >   "
         android:textAlignment="textEnd"
         android:textColor="#FFFFFF"
         android:textSize="34sp"
-        android:textStyle="bold"
-        android:translationY="1100px" />
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="143dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/ObjectWeight"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="47dp"
+        android:text="&lt; Stock"
+        android:textAlignment="textStart"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

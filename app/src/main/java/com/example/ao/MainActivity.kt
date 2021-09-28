@@ -83,6 +83,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun checkInput(data: String):Boolean {
+        if(data == "") {
+            return false
+        }
+        return true
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,35 +124,65 @@ class MainActivity : AppCompatActivity() {
                 super.onSwipeRight()
                 val oName = findViewById(R.id.ObjectName) as EditText
                 val oWeight = findViewById(R.id.ObjectWeight) as EditText
-                addLineCSV(filename + ".csv", oName.text.toString()+";"+oWeight.text.toString().replace(".", ",")+";0;0;1\n")
-                oName.getText().clear()
-                oWeight.getText().clear()
-                Toast.makeText(
-                    this@MainActivity,
-                    "RIP",
-                    Toast.LENGTH_SHORT
-                ).show()
+                if(checkInput(oName.text.toString()) && checkInput(oWeight.text.toString())) {
+                    addLineCSV(filename + ".csv",
+                        oName.text.toString() + ";" + oWeight.text.toString()
+                            .replace(".", ",") + ";0;0;1\n"
+                    )
+                    oName.getText().clear()
+                    oWeight.getText().clear()
+                    Toast.makeText(
+                        this@MainActivity,
+                        "RIP",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Objet incomplet",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onSwipeUp() {
                 super.onSwipeUp()
                 val oName = findViewById(R.id.ObjectName) as EditText
                 val oWeight = findViewById(R.id.ObjectWeight) as EditText
-                addLineCSV(filename + ".csv", oName.text.toString()+";"+oWeight.text.toString().replace(".", ",")+";1;0;0\n")
-                oName.getText().clear()
-                oWeight.getText().clear()
-                Toast.makeText(this@MainActivity, "Merci pour la reprise", Toast.LENGTH_SHORT)
-                    .show()
+                if(checkInput(oName.text.toString()) && checkInput(oWeight.text.toString())) {
+                    addLineCSV(filename + ".csv", oName.text.toString()+";"+oWeight.text.toString().replace(".", ",")+";1;0;0\n")
+                    oName.getText().clear()
+                    oWeight.getText().clear()
+                    Toast.makeText(this@MainActivity, "Merci pour la reprise", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                else {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Objet incomplet",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
             override fun onSwipeDown() {
                 super.onSwipeDown()
                 val oName = findViewById(R.id.ObjectName) as EditText
                 val oWeight = findViewById(R.id.ObjectWeight) as EditText
-                addLineCSV(filename + ".csv", oName.text.toString()+";"+oWeight.text.toString().replace(".", ",")+";0;1;0\n")
-                oName.getText().clear()
-                oWeight.getText().clear()
-                Toast.makeText(this@MainActivity, "Merci pour votre don", Toast.LENGTH_SHORT)
-                    .show()
+                if(checkInput(oName.text.toString()) && checkInput(oWeight.text.toString())) {
+                    addLineCSV(filename + ".csv", oName.text.toString()+";"+oWeight.text.toString().replace(".", ",")+";0;1;0\n")
+                    oName.getText().clear()
+                    oWeight.getText().clear()
+                    Toast.makeText(this@MainActivity, "Merci pour votre don", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                else {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Objet incomplet",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         })
     }
