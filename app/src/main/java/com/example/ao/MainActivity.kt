@@ -21,10 +21,13 @@ import androidx.core.content.ContextCompat
 import java.lang.NullPointerException
 import java.nio.file.Files
 import java.nio.file.Paths
+import android.content.Intent
+import android.text.Editable
+import androidx.constraintlayout.widget.ConstraintLayout
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var layout: RelativeLayout
+    private lateinit var layout: ConstraintLayout
     fun Date.toString(format: String, locale: Locale = Locale.getDefault()): String {
         val formatter = SimpleDateFormat(format, locale)
         return formatter.format(this)
@@ -159,16 +162,34 @@ class MainActivity : AppCompatActivity() {
 
 
         setContentView(R.layout.activity_main)
-        layout = findViewById(R.id.relativeLayout)
+        layout = findViewById(R.id.constraintLayout)
         // Create if not exist csv
         val filename = getCurrentExcelFileName()
         createCSV(filename + ".csv")
+
+        val bundle :Bundle ?=intent.extras
+        if (bundle!=null) {
+            var data_str = bundle.getString("data","Debug")
+            if(data_str != "Debug") {
+                var data = data_str?.split(";")?.toTypedArray() // 1
+
+                val oName = findViewById(R.id.ObjectName) as EditText
+                val oWeight = findViewById(R.id.ObjectWeight) as EditText
+                oName.text = Editable.Factory.getInstance().newEditable(data?.get(0))
+                oWeight.text = Editable.Factory.getInstance().newEditable(data?.get(1))
+            }
+        }
         layout.setOnTouchListener(object : OnSwipeTouchListener(this@MainActivity) {
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                Toast.makeText(this@MainActivity, readCSV(filename+".csv").joinToString("\n"),
+                /*Toast.makeText(this@MainActivity, readCSV(filename+".csv").joinToString("\n"),
                     Toast.LENGTH_SHORT)
-                    .show()
+                    .show()*/
+                val intent = Intent(applicationContext, ListObjectActivity::class.java)
+                val bundle = Bundle()
+                bundle.putStringArrayList("data", readCSV(filename+".csv"))
+                intent.putExtras(bundle)
+                startActivity(intent)
             }
             override fun onSwipeRight() {
                 super.onSwipeRight()
